@@ -7,6 +7,7 @@ var chanceEl = document.querySelector(".chance");
 var clickEl = document.querySelector(".click-count")
 var bestBreadEl = document.querySelector(".best-bread");
 var prevBreadEl = document.querySelector(".prev-bread");
+var chanceOfProgEl = document.querySelector(".chance-of-progress")
 var clickCount = 0;
 var bestBread = 0;
 var money = 0;
@@ -28,6 +29,21 @@ document.addEventListener("keyup", function(e) {
     resetBtn.click();
   }
 })
+
+function calcChanceOfClicks(clicks) {
+  let inverse;
+  let odds;
+  let chance = 1;
+  odds = 100 - chance;
+  for(let i = 1; i <= clicks; i++) {
+    if(i > 1) {
+      inverse = 100 - chance;
+      odds = (odds * inverse) / 100;
+    }
+    chance *= 1.05;
+  }
+  return odds;
+}
 
 function reset() {
   money = 0;
@@ -65,6 +81,9 @@ function die() {
   moneyBtn.className = "dead-cash-button";
   resetBtn.className = "active-reset-button";
   cashOutBtn.className = "dead-cash-button";
+  let chanceOfProg = calcChanceOfClicks(clickCount).toFixed(3);
+  chanceOfProgEl.textContent = "The odds of making it this far is: " + chanceOfProg + "%";
+
 }
 
 function play() {
