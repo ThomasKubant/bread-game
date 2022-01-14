@@ -1,4 +1,4 @@
-var moneyBtn = document.querySelector(".funny-button");
+var moneyBtn = document.querySelector(".cash-button");
 var cashOutBtn = document.querySelector(".cash-out-button");
 var resetBtn = document.querySelector(".reset-button");
 var balance = document.querySelector(".balance");
@@ -8,14 +8,21 @@ var clickEl = document.querySelector(".click-count")
 var bestBreadEl = document.querySelector(".best-bread");
 var prevBreadEl = document.querySelector(".prev-bread");
 var chanceOfProgEl = document.querySelector(".chance-of-progress")
+var nameInputDiv = document.querySelector(".name-input-div");
+var nameInputBox = document.querySelector(".name-input");
+var nameInputText = document.querySelector(".name-input-text");
+var nameInputBtn = document.querySelector(".name-input-btn");
+var leaderboardList = document.querySelector(".leaderboard-list")
+var leaderboardContainer = document.querySelector(".leaderboard-container")
+var leaderboardOpenBtn = document.querySelector(".leaderboard-open-btn")
 var clickCount = 0;
 var bestBread = 0;
 var money = 0;
 var chance = 1;
 
+nameInputBtn.addEventListener("click", () => submitData())
 moneyBtn.addEventListener("click", () => play());
 document.addEventListener("keyup", function(e) {
-  console.log(e);
   if(e.keyCode === 13) {
     e.preventDefault;
     moneyBtn.click();
@@ -29,6 +36,55 @@ document.addEventListener("keyup", function(e) {
     resetBtn.click();
   }
 })
+
+
+leaderboardOpenBtn.addEventListener("click", () => getLeaderboard())
+async function getLeaderboard() {
+  const response = await fetch('/api/users', {
+    method: 'GET'
+  })
+  .then(function(response) {
+    if(response.ok) {
+      response.json().then(function(data) {
+        for(i = 0; i < data.length; i++) {
+          var newUser = document.createElement("LI")
+          newUser.className = "leaderboard-list-item"
+          console.log(data)
+          newUser.innerText = data[i].username + ": $" + data[i].score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          leaderboardList.appendChild(newUser)
+        }
+      })
+    }
+  })
+  console.log(response)
+  leaderboardList.style = "display: inline; width: 15vw"
+  leaderboardOpenBtn.style = "right: 16vw"
+}
+
+async function submitData() {
+  console.log(nameInputBox.value)
+  var username = nameInputBox.value;
+  var score = money
+  console.log(username, score);
+  const response = await fetch('/api/users', {
+    method: 'POST',
+    body: JSON.stringify({
+      username,
+      score
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  if (response.ok) {
+    console.log(response)
+  } else {
+    alert(response.statusText)
+  }
+  reset()
+  nameInputDiv.style = "display: none"
+}
 
 function calcChanceOfClicks(clicks) {
   let inverse;
@@ -49,7 +105,7 @@ function reset() {
   money = 0;
   chance = 1;
   clickCount = 0;
-  moneyBtn.className = "funny-button";
+  moneyBtn.className = "cash-button";
   cashOutBtn.className = "cash-out-button";
   dead.textContent = ""
   clickEl.textContent = "Click count: 0"
@@ -61,6 +117,7 @@ function reset() {
 function cashOut() {
   if (cashOutBtn.className != "dead-cash-button") {
     if (money > bestBread || bestBread === null) {
+      nameInputDiv.style = "display: flex"
       bestBreadEl.textContent =
         "Your best breadage was: $" +
         money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -69,9 +126,6 @@ function cashOut() {
     prevBreadEl.textContent =
       "Your previous breadage was : $" +
       money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    money = 0;
-    balance.textContent = "Current breadage: $" + 0;
-    reset()
   }
 }
 

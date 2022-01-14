@@ -1,0 +1,113 @@
+body {
+    background-color: #414141;
+}
+
+.cash-game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    align-items: space-around;
+}
+
+h1.cash-button {
+    color: #ffffff;
+    background-color: #247B7B;
+    width: 15vw;
+    text-align: center;
+    cursor: pointer;
+}
+
+h1.cash-out-button {
+    color: #ffffff;
+    background-color: #247B7B;
+    width: 15vw;
+    text-align: center;
+    cursor: pointer;
+}
+
+.reset-button {
+    display: none;
+}
+
+.active-reset-button {
+    color: #ffffff;
+    background-color: #247B7B;
+    width: 15vw;
+    text-align: center;
+    cursor: pointer;
+}
+
+.dead-cash-button {
+    color: #ffffff;
+    background-color: #8b8b8b;
+    width: 15vw;
+    text-align: center;
+}
+
+h1 {
+    color: #ffffff;
+}
+
+.click-chance {
+    display: flex;
+    width: 30vw;
+    justify-content: space-around;
+}
+
+.name-input {
+    background-color: #8b8b8b;
+    color: #ffffff;
+    height: 2vh;
+    width: 15vw;
+}
+
+.name-input-div {
+    display: none;
+    align-items: center;
+}
+
+.name-input-text {
+    color: #ffffff;
+    margin-right: 1vw;
+}
+
+.name-input-btn {
+    color: #ffffff;
+    background-color: #247B7B;
+    padding: .4vh;
+    cursor: pointer;
+}
+
+.leaderboard-container {
+    position: fixed;
+    display: flex;
+    align-items: space-between;
+    justify-content: center;
+    right: 0;
+    top: 0;
+    background-color: #8b8b8b;
+    z-index: 1;
+    overflow-x: hidden;
+    transition: 0.5s;
+    height: 100vh;
+}
+
+.leaderboard-list {
+    width: 0;
+    /* display: none; */
+    transition: 0.5s;
+    color: #ffffff;
+    font-size: 1vw;
+}
+
+.leaderboard-open-btn {
+    position: fixed;
+    top: 45vh;
+    right: 0;
+    height: 2vw;
+    width: 5vh;
+    cursor: pointer;
+    border-radius: 10%;
+    transition: 0.5s;
+}
